@@ -1,0 +1,43 @@
+# .gitignore for Terraform Projects
+
+# --- Terraform State ---
+terraform.tfstate
+terraform.tfstate.backup
+terraform.tfstate.*.backup
+
+# --- Terraform Plans ---
+*.tfplan
+
+# --- Terraform Provider Cache and Modules ---
+.terraform/
+
+# --- Terraform Crash Logs ---
+crash.log
+crash.*.log
+
+# --- Terraform Debug Logs ---
+*.log
+
+# --- Terraform Variable Files ---
+*.tfvars
+*.tfvars.json
+
+# --- Terraform Override Files ---
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# --- Operating System Files ---
+# macOS
+.DS_Store
+# Windows
+Thumbs.db
+
+# --- Editor/IDE Files (Optional) ---
+# 사용하는 편집기나 IDE에 따라 필요한 경우 추가하세요.
+.vscode/
+.idea/
+*.swp
+*~
+*.pem
