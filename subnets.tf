@@ -6,8 +6,6 @@ resource "samsungcloudplatformv2_vpc_subnet" "lb_subnet" {
   cidr        = var.subnet_cidrs["lb"]
   description = "Loadbalancer  Subnet"
   tags        = local.common_tags
-  # depends_on  = [time_sleep.wait_after_vpc]
-#   depends_on  = [samsungcloudplatform_internet_gateway.my_igw]
 }
 
 # 쿠버네티스 클러스터를 위한 프라이빗 서브넷
@@ -18,8 +16,6 @@ resource "samsungcloudplatformv2_vpc_subnet" "k8s_subnet" {
   cidr        = var.subnet_cidrs["k8s"]
   description = "k8s Subnet"
   tags        = local.common_tags
-  # depends_on  = [time_sleep.wait_after_vpc]
-#   depends_on  = [samsungcloudplatform_internet_gateway.my_igw]
 }
 
 # 데이터베이스를 위한 프라이빗 서브넷
@@ -30,6 +26,4 @@ resource "samsungcloudplatformv2_vpc_subnet" "db_subnet" {
   cidr        = var.subnet_cidrs["db"]
   description = "DB Subnet"
   tags        = local.common_tags
-  # depends_on  = [time_sleep.wait_after_vpc]
-#   depends_on  = [samsungcloudplatform_internet_gateway.my_igw]
 }

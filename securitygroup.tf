@@ -45,29 +45,6 @@ resource "samsungcloudplatformv2_security_group_security_group_rule" "my_sg_rule
   depends_on  = [samsungcloudplatformv2_security_group_security_group_rule.my_sg_rule_lb_http]
 }
 
-# resource "samsungcloudplatformv2_security_group_security_group_rule" "my_sg_rule_k8s_http" {
-#   security_group_id = samsungcloudplatformv2_security_group_security_group.k8s_sg.id
-#   ethertype         = "IPv4"
-#   protocol          = "TCP"
-#   direction         = "ingress"
-#   description       = "SecurityGroup Rule generated from Terraform"
-#   remote_ip_prefix  = "192.168.0.0/24"
-#   port_range_min    = 80
-#   port_range_max    = 80
-# }
-
-# resource "samsungcloudplatformv2_security_group_security_group_rule" "my_sg_rule_k8s_https" {
-#   security_group_id = samsungcloudplatformv2_security_group_security_group.k8s_sg.id
-#   ethertype         = "IPv4"
-#   protocol          = "TCP"
-#   direction         = "ingress"
-#   description       = "SecurityGroup Rule generated from Terraform"
-#   remote_ip_prefix  = "192.168.0.0/24"
-#   port_range_min    = 443
-#   port_range_max    = 443
-#   depends_on  = [samsungcloudplatformv2_security_group_security_group_rule.my_sg_rule_k8s_http]
-# }
-
 resource "samsungcloudplatformv2_security_group_security_group_rule" "my_sg_rule_kubectl" {
   security_group_id = samsungcloudplatformv2_security_group_security_group.k8s_sg.id
   ethertype         = "IPv4"
