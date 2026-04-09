@@ -1,3 +1,4 @@
+# [Locals] 프로젝트 전반에서 재사용되는 변수 및 상수 그룹 정의
 # 프로젝트 메타데이터 설정
 locals {
   # 프로젝트 이름 정의
@@ -17,6 +18,7 @@ locals {
   name_prefix = "tf"
 }
 
+# [Data Source] 현재 작업자의 공인 IP 주소 자동 조회
 # 현재 IP 주소 조회 데이터 소스
 data "http" "my_public_ip" {
   url = "https://ipv4.icanhazip.com"

@@ -1,1 +1,1 @@
-# 로드밸런서는 ingress-controller를 사용하여 구현됩니다.
+# 로드밸런서 (Load Balancer) - 서비스 노출은 쿠버네티스 Ingress Controller를 통해 처리됩니다.

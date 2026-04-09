@@ -1,4 +1,4 @@
-# 시스템 업데이트를 위한 아웃바운드 규칙
+# [Firewall Rule] 인터넷 게이트웨이 레벨의 아웃바운드 정책 - 시스템 업데이트용
 resource "samsungcloudplatformv2_firewall_firewall_rule" "my_igw_fwrule_systemupdate" {
   firewall_id = samsungcloudplatformv2_vpc_internet_gateway.my_igw.internet_gateway.firewall_id
   firewall_rule_create = {
@@ -19,7 +19,7 @@ resource "samsungcloudplatformv2_firewall_firewall_rule" "my_igw_fwrule_systemup
   }
 }
 
-# 웹 서비스 인바운드 접근 규칙
+# [Firewall Rule] 인터넷 게이트웨이 레벨의 인바운드 정책 - 외부 웹 서비스 접근용
 resource "samsungcloudplatformv2_firewall_firewall_rule" "my_igw_fwrule_webservice" {
   firewall_id = samsungcloudplatformv2_vpc_internet_gateway.my_igw.internet_gateway.firewall_id
   firewall_rule_create = {
@@ -41,7 +41,7 @@ resource "samsungcloudplatformv2_firewall_firewall_rule" "my_igw_fwrule_webservi
   depends_on  = [samsungcloudplatformv2_firewall_firewall_rule.my_igw_fwrule_systemupdate]
 }
 
-# 쿠버네티스 API 접근 규칙
+# [Firewall Rule] 인터넷 게이트웨이 레벨의 인바운드 정책 - 쿠버네티스 API 접근용
 resource "samsungcloudplatformv2_firewall_firewall_rule" "my_igw_fwrule_k8s" {
   firewall_id = samsungcloudplatformv2_vpc_internet_gateway.my_igw.internet_gateway.firewall_id
   firewall_rule_create = {

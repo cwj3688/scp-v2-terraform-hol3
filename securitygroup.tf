@@ -1,7 +1,7 @@
-# 배스천 호스트용 보안 그룹
+# [LB Security Group] 외부 로드밸런서용 보안 그룹
 resource "samsungcloudplatformv2_security_group_security_group" "lb_sg" {
   name        = "${local.name_prefix}-lb-SG-${local.environment}"
-  description = "SecurityGroup generated from terraform"
+  description = "Security Group  generated from Terraform"
   loggable = false
   tags        = local.common_tags
 }
@@ -9,7 +9,7 @@ resource "samsungcloudplatformv2_security_group_security_group" "lb_sg" {
 # 쿠버네티스 클러스터용 보안 그룹
 resource "samsungcloudplatformv2_security_group_security_group" "k8s_sg" {
   name        = "${local.name_prefix}-k8s-SG-${local.environment}"
-  description = "SecurityGroup generated from terraform"
+  description = "Security Group  generated from Terraform"
   loggable = false
   tags        = local.common_tags
 }
@@ -17,11 +17,12 @@ resource "samsungcloudplatformv2_security_group_security_group" "k8s_sg" {
 # 데이터베이스용 보안 그룹
 resource "samsungcloudplatformv2_security_group_security_group" "db_sg" {
   name        = "${local.name_prefix}-db-SG-${local.environment}"
-  description = "SecurityGroup generated from terraform"
+  description = "Security Group  generated from Terraform"
   loggable = false
   tags        = local.common_tags
 }
 
+# [Rule] 로드밸런서로의 HTTP(80) 인바운드 트래픽 허용
 resource "samsungcloudplatformv2_security_group_security_group_rule" "my_sg_rule_lb_http" {
   security_group_id = samsungcloudplatformv2_security_group_security_group.lb_sg.id
   ethertype         = "IPv4"
@@ -33,6 +34,7 @@ resource "samsungcloudplatformv2_security_group_security_group_rule" "my_sg_rule
   port_range_max    = 80
 }
 
+# [Rule] 로드밸런서로의 HTTPS(443) 인바운드 트래픽 허용
 resource "samsungcloudplatformv2_security_group_security_group_rule" "my_sg_rule_lb_https" {
   security_group_id = samsungcloudplatformv2_security_group_security_group.lb_sg.id
   ethertype         = "IPv4"
@@ -45,6 +47,7 @@ resource "samsungcloudplatformv2_security_group_security_group_rule" "my_sg_rule
   depends_on  = [samsungcloudplatformv2_security_group_security_group_rule.my_sg_rule_lb_http]
 }
 
+# [Rule] 작업자 IP에서 쿠버네티스 API(6443) 접속 허용
 resource "samsungcloudplatformv2_security_group_security_group_rule" "my_sg_rule_kubectl" {
   security_group_id = samsungcloudplatformv2_security_group_security_group.k8s_sg.id
   ethertype         = "IPv4"
@@ -57,6 +60,7 @@ resource "samsungcloudplatformv2_security_group_security_group_rule" "my_sg_rule
   # depends_on  = [samsungcloudplatformv2_security_group_security_group_rule.my_sg_rule_k8s_https]
 }
 
+# [Rule] 시스템 업데이트를 위한 외부 HTTP(80) 아웃바운드 허용
 resource "samsungcloudplatformv2_security_group_security_group_rule" "my_sg_rule_update_http" {
   security_group_id = samsungcloudplatformv2_security_group_security_group.k8s_sg.id
   ethertype         = "IPv4"
@@ -69,6 +73,7 @@ resource "samsungcloudplatformv2_security_group_security_group_rule" "my_sg_rule
   depends_on  = [samsungcloudplatformv2_security_group_security_group_rule.my_sg_rule_kubectl]
 }
 
+# [Rule] 시스템 업데이트를 위한 외부 HTTPS(443) 아웃바운드 허용
 resource "samsungcloudplatformv2_security_group_security_group_rule" "my_sg_rule_update_https" {
   security_group_id = samsungcloudplatformv2_security_group_security_group.k8s_sg.id
   ethertype         = "IPv4"

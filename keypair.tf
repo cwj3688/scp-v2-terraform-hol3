@@ -1,3 +1,4 @@
+# 가상 서버 접속용 키 페어 (Key Pair) 리소스
 resource "samsungcloudplatformv2_virtualserver_keypair" "keypair" {
   name = "${local.name_prefix}-keypair-${local.environment}"
   tags = local.common_tags
@@ -7,6 +8,7 @@ output "keypair_output" {
   value = samsungcloudplatformv2_virtualserver_keypair.keypair
 }
 
+# 생성된 프라이빗 키를 로컬 파일(.pem)로 자동 저장
 resource "local_file" "my_keypair" {
   content  = samsungcloudplatformv2_virtualserver_keypair.keypair.private_key
   filename = pathexpand("./mykey.pem") # 저장될 파일 경로 및 이름

@@ -1,3 +1,4 @@
+# 파일 스토리지 (File Storage) - NFS 프로토콜을 사용하는 공유 스토리지 볼륨
 resource "samsungcloudplatformv2_filestorage_volume" "k8s_file_storage" {
   name = "${local.name_prefix}fs${local.environment}"
   protocol = "NFS"

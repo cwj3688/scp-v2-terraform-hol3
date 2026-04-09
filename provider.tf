@@ -1,3 +1,4 @@
+# 테라폼 및 프로바이더 요구사항 정의
 terraform {
   required_providers {
     samsungcloudplatformv2 = {
@@ -20,6 +21,7 @@ terraform {
   required_version = ">= 1.11"
 }
 
+# 삼성 클라우드 플랫폼(SCP) v2 프로바이더 설정
 provider "samsungcloudplatformv2" {
 }
 

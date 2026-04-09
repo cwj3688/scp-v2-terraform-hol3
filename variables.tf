@@ -1,4 +1,6 @@
-# 인터넷 게이트웨이 설정
+# [Variables] 사용자 입력 및 구성을 위한 변수 정의
+
+# 인터넷 게이트웨이 타입 설정
 variable "igw_type" {
   type = string
   default = "IGW"
