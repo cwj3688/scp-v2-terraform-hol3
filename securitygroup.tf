@@ -22,66 +22,55 @@ resource "samsungcloudplatformv2_security_group_security_group" "db_sg" {
   tags        = local.common_tags
 }
 
-# [Rule] 로드밸런서로의 HTTP(80) 인바운드 트래픽 허용
-resource "samsungcloudplatformv2_security_group_security_group_rule" "my_sg_rule_lb_http" {
-  security_group_id = samsungcloudplatformv2_security_group_security_group.lb_sg.id
-  ethertype         = "IPv4"
-  protocol          = "TCP"
-  direction         = "ingress"
-  description       = "SecurityGroup Rule generated from Terraform"
-  remote_ip_prefix  = "0.0.0.0/0"
-  port_range_min    = 80
-  port_range_max    = 80
+# 보안 그룹 규칙 정의 (반복문 사용)
+locals {
+  sg_rules = {
+    lb_http = {
+      sg_id       = samsungcloudplatformv2_security_group_security_group.lb_sg.id
+      direction   = "ingress"
+      port        = 80
+      remote_ip   = "0.0.0.0/0"
+      description = "Allow Inbound HTTP (80) for Loadbalancer"
+    }
+    lb_https = {
+      sg_id       = samsungcloudplatformv2_security_group_security_group.lb_sg.id
+      direction   = "ingress"
+      port        = 443
+      remote_ip   = "0.0.0.0/0"
+      description = "Allow Inbound HTTPS (443) for Loadbalancer"
+    }
+    k8s_kubectl = {
+      sg_id       = samsungcloudplatformv2_security_group_security_group.k8s_sg.id
+      direction   = "ingress"
+      port        = 6443
+      remote_ip   = local.my_current_ip_address
+      description = "Allow Inbound Kubernetes API (6443) from My IP"
+    }
+    k8s_update_http = {
+      sg_id       = samsungcloudplatformv2_security_group_security_group.k8s_sg.id
+      direction   = "egress"
+      port        = 80
+      remote_ip   = "0.0.0.0/0"
+      description = "Allow Outbound HTTP (80) for System Updates"
+    }
+    k8s_update_https = {
+      sg_id       = samsungcloudplatformv2_security_group_security_group.k8s_sg.id
+      direction   = "egress"
+      port        = 443
+      remote_ip   = "0.0.0.0/0"
+      description = "Allow Outbound HTTPS (443) for System Updates"
+    }
+  }
 }
 
-# [Rule] 로드밸런서로의 HTTPS(443) 인바운드 트래픽 허용
-resource "samsungcloudplatformv2_security_group_security_group_rule" "my_sg_rule_lb_https" {
-  security_group_id = samsungcloudplatformv2_security_group_security_group.lb_sg.id
+resource "samsungcloudplatformv2_security_group_security_group_rule" "sg_rules" {
+  for_each          = local.sg_rules
+  security_group_id = each.value.sg_id
+  direction         = each.value.direction
   ethertype         = "IPv4"
   protocol          = "TCP"
-  direction         = "ingress"
-  description       = "SecurityGroup Rule generated from Terraform"
-  remote_ip_prefix  = "0.0.0.0/0"
-  port_range_min    = 443
-  port_range_max    = 443
-  depends_on  = [samsungcloudplatformv2_security_group_security_group_rule.my_sg_rule_lb_http]
-}
-
-# [Rule] 작업자 IP에서 쿠버네티스 API(6443) 접속 허용
-resource "samsungcloudplatformv2_security_group_security_group_rule" "my_sg_rule_kubectl" {
-  security_group_id = samsungcloudplatformv2_security_group_security_group.k8s_sg.id
-  ethertype         = "IPv4"
-  protocol          = "TCP"
-  direction         = "ingress"
-  description       = "SecurityGroup Rule generated from Terraform"
-  remote_ip_prefix  = "${local.my_current_ip_address}"
-  port_range_min    = 6443
-  port_range_max    = 6443
-  # depends_on  = [samsungcloudplatformv2_security_group_security_group_rule.my_sg_rule_k8s_https]
-}
-
-# [Rule] 시스템 업데이트를 위한 외부 HTTP(80) 아웃바운드 허용
-resource "samsungcloudplatformv2_security_group_security_group_rule" "my_sg_rule_update_http" {
-  security_group_id = samsungcloudplatformv2_security_group_security_group.k8s_sg.id
-  ethertype         = "IPv4"
-  protocol          = "TCP"
-  direction         = "egress"
-  description       = "SecurityGroup Rule generated from Terraform"
-  remote_ip_prefix  = "0.0.0.0/0"
-  port_range_min    = 80
-  port_range_max    = 80
-  depends_on  = [samsungcloudplatformv2_security_group_security_group_rule.my_sg_rule_kubectl]
-}
-
-# [Rule] 시스템 업데이트를 위한 외부 HTTPS(443) 아웃바운드 허용
-resource "samsungcloudplatformv2_security_group_security_group_rule" "my_sg_rule_update_https" {
-  security_group_id = samsungcloudplatformv2_security_group_security_group.k8s_sg.id
-  ethertype         = "IPv4"
-  protocol          = "TCP"
-  direction         = "egress"
-  description       = "SecurityGroup Rule generated from Terraform"
-  remote_ip_prefix  = "0.0.0.0/0"
-  port_range_min    = 443
-  port_range_max    = 443
-  depends_on  = [samsungcloudplatformv2_security_group_security_group_rule.my_sg_rule_update_http]
+  port_range_min    = each.value.port
+  port_range_max    = each.value.port
+  remote_ip_prefix  = each.value.remote_ip
+  description       = each.value.description
 }

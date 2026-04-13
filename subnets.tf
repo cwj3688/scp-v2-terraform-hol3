@@ -4,7 +4,7 @@ resource "samsungcloudplatformv2_vpc_subnet" "lb_subnet" {
   vpc_id      = samsungcloudplatformv2_vpc_vpc.my_vpc.id
   type        = var.subnet_type
   cidr        = var.subnet_cidrs["lb"]
-  description = "Public Subnet for External Loadbalancer generated from Terraform"
+  description = "Public Subnet for External Loadbalancer"
   tags        = local.common_tags
 }
 
@@ -14,7 +14,7 @@ resource "samsungcloudplatformv2_vpc_subnet" "k8s_subnet" {
   vpc_id      = samsungcloudplatformv2_vpc_vpc.my_vpc.id
   type        = var.subnet_type
   cidr        = var.subnet_cidrs["k8s"]
-  description = "Private Subnet for Kubernetes Cluster Nodes generated from Terraform"
+  description = "Private Subnet for K8s Cluster Nodes"
   tags        = local.common_tags
 }
 
@@ -24,6 +24,6 @@ resource "samsungcloudplatformv2_vpc_subnet" "db_subnet" {
   vpc_id      = samsungcloudplatformv2_vpc_vpc.my_vpc.id
   type        = var.subnet_type
   cidr        = var.subnet_cidrs["db"]
-  description = "Private Subnet for Database Instances generated from Terraform"
+  description = "Private Subnet for Database Instances"
   tags        = local.common_tags
 }

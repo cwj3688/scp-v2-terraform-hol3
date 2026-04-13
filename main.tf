@@ -26,5 +26,5 @@ data "http" "my_public_ip" {
 
 # 현재 IP 주소 변수 정의
 locals {
-  my_current_ip_address = chomp(data.http.my_public_ip.response_body)
+  my_current_ip_address = "${chomp(data.http.my_public_ip.response_body)}/32"
 }
