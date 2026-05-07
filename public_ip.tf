@@ -2,14 +2,20 @@
 
 # 로드밸런서용 공인 IP
 resource "samsungcloudplatformv2_vpc_publicip" "lb_publicip" {
-    description = "Loadbalancer Public ip generated from Terraform"
-    type = "IGW"
-    tags = local.common_tags
+  description = "Loadbalancer Public ip generated from Terraform"
+  type        = "IGW"
+  tags        = local.common_tags
+  depends_on = [
+    samsungcloudplatformv2_vpc_internet_gateway.my_igw,
+  ]
 }
 
 # NAT 게이트웨이용 공인 IP
 resource "samsungcloudplatformv2_vpc_publicip" "natgw_publicip" {
-    description = "NAT Gateway Public ip generated from Terraform"
-    type = "IGW"
-    tags = local.common_tags
+  description = "NAT Gateway Public ip generated from Terraform"
+  type        = "IGW"
+  tags        = local.common_tags
+  depends_on = [
+    samsungcloudplatformv2_vpc_internet_gateway.my_igw,
+  ]
 }
