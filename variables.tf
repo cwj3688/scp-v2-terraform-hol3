@@ -46,5 +46,5 @@ variable "vpc_wait_time" {
 variable "kubernetes_version" {
   description = "쿠버네티스 엔진 버전"
   type        = string
-  default     = "v1.31.8"
+  default     = "v1.32.8"
 }
