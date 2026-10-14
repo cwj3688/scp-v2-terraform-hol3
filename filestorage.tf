@@ -8,4 +8,6 @@ resource "samsungcloudplatformv2_filestorage_volume" "k8s_file_storage" {
   access_rules = []
 
   tags = local.common_tags
+  # 5.0.0 대응
+  zone = "kr-west1-b"
 }

@@ -14,4 +14,8 @@ resource "samsungcloudplatformv2_ske_nodepool" "nodepool" {
   server_type_id = "s1v2m4"
   volume_type_name = "SSD"
   volume_size = "104"
+
+  # 5.0.0 대응
+  zone = "kr-west1-b"
+  subnet_id = samsungcloudplatformv2_vpc_subnet.k8s_subnet.id
 }
